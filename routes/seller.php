@@ -14,14 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::post('register' , [\App\Http\Controllers\User\LoginController::class , 'Register']);
-Route::post('login' , [\App\Http\Controllers\User\LoginController::class ,'login']);
+
+Route::post('register' , [\App\Http\Controllers\Seller\LoginController::class , 'Register']);
+Route::post('login' , [\App\Http\Controllers\Seller\LoginController::class ,'login']);
 
 Route::group(['middleware'=>'auth:sanctum'] , function () {
-    Route::get('logout', [\App\Http\Controllers\User\LoginController::class, 'logout']);
+    Route::get('logout', [\App\Http\Controllers\Seller\LoginController::class, 'logout']);
 });
 
-Route::apiResource('categories' , \App\Http\Controllers\User\CategoryController::class)->only('index' , 'show');
+//Route::group(['middleware'=>'auth:sanctum'] , function (){
+    Route::apiResource('categories', \App\Http\Controllers\Seller\CategoryController::class)->only('index','store', 'update', 'destroy');
+//});
+

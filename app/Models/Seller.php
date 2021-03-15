@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class Seller extends Authenticatable
 {
+    use HasFactory,HasApiTokens ,Notifiable;
+    protected $guard = 'seller';
+
     use HasFactory,HasApiTokens, Notifiable;
 
     /**
@@ -23,6 +26,7 @@ class User extends Authenticatable
         'phone',
         'latitude',
         'longitude',
+        'available_seller',
         'verified',
         'password',
     ];
@@ -45,4 +49,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function getId()
+    {
+        return $this->id ;
+    }
+
 }
