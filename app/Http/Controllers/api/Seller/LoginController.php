@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\api\Seller;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Models\Seller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
