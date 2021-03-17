@@ -15,14 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('register' , [\App\Http\Controllers\Seller\LoginController::class , 'Register']);
-Route::post('login' , [\App\Http\Controllers\Seller\LoginController::class ,'login']);
+Route::post('register' , [\App\Http\Controllers\api\Seller\LoginController::class , 'Register']);
+Route::post('login' , [\App\Http\Controllers\api\Seller\LoginController::class ,'login']);
+
+Route::apiResource('sellers' , \App\Http\Controllers\api\Seller\SellerController::class);
 
 Route::group(['middleware'=>'auth:sanctum'] , function () {
-    Route::get('logout', [\App\Http\Controllers\Seller\LoginController::class, 'logout']);
+    Route::get('logout', [\App\Http\Controllers\api\Seller\LoginController::class, 'logout']);
 });
 
-//Route::group(['middleware'=>'auth:sanctum'] , function (){
-    Route::apiResource('categories', \App\Http\Controllers\Seller\CategoryController::class)->only('index','store', 'update', 'destroy');
-//});
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Transformers\Seller\SellerTransformation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,6 +21,8 @@ class Seller extends Authenticatable
      *
      * @var array
      */
+
+    public  $transformer = SellerTransformation::class;
     protected $fillable = [
         'name',
         'email',
@@ -54,6 +57,17 @@ class Seller extends Authenticatable
     public function getId()
     {
         return $this->id ;
+    }
+
+    public function scopeSelection($query)
+    {
+        return $query->select( 'name',
+            'email',
+            'phone',
+            'latitude',
+            'longitude',
+            'available_seller',
+            'verified');
     }
 
 }

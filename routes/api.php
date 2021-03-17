@@ -17,11 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('register' , [\App\Http\Controllers\User\LoginController::class , 'Register']);
-Route::post('login' , [\App\Http\Controllers\User\LoginController::class ,'login']);
+Route::post('register' , [\App\Http\Controllers\api\User\LoginController::class , 'Register']);
+Route::post('login' , [\App\Http\Controllers\api\User\LoginController::class ,'login']);
 
 Route::group(['middleware'=>'auth:sanctum'] , function () {
-    Route::get('logout', [\App\Http\Controllers\User\LoginController::class, 'logout']);
+    Route::get('logout', [\App\Http\Controllers\api\User\LoginController::class, 'logout']);
+    Route::apiResource('users' , \App\Http\Controllers\api\User\UserController::class);
+    Route::apiResource('categories' , App\Http\Controllers\api\Category\CategoryController::class)->only('index' , 'show');
 });
 
-Route::apiResource('categories' , \App\Http\Controllers\User\CategoryController::class)->only('index' , 'show');
