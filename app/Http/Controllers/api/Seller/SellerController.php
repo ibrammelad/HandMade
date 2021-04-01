@@ -19,12 +19,6 @@ class SellerController extends Controller
     }
 
 
-    public function store(Request $request)
-    {
-        //
-    }
-
-
     public function show($id)
     {
         $seller = Seller::findOrfail($id);
@@ -34,11 +28,16 @@ class SellerController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'email' => 'email|unique:sellers',
+            'phone' =>'unique:sellers',
+            'password' => 'confirmed',
+            'available_seller' => 'in:0,1'
+        ];
     }
 
     public function destroy($id)
     {
-        //
+
     }
 }

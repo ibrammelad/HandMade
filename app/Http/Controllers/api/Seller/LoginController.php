@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\Seller;
 
 use App\Http\Controllers\Controller;
 use App\Models\Seller;
+use App\Traits\apiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +13,8 @@ use Validator;
 
 class LoginController extends Controller
 {
+    use apiResponse;
+
     public function login(Request $request)
     {
 
@@ -21,9 +24,9 @@ class LoginController extends Controller
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
-        $success['token'] =  $user->createToken('MyApp')->plainTextToken;
+        $success['token'] =  $user->createToken($user->name)->plainTextToken;
         $success['name'] =  $user->name;
-        return response()->json($success,202);
+        return $this->showOne($success,202);
     }
 
     public function Register(Request $request)
@@ -39,15 +42,15 @@ class LoginController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json( $validator->errors() , 404);
+            return $this->showMessage( $validator->errors() , 404);
         }
 
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = Seller::create($input);
-        $success['token'] =  $user->createToken('MyApp')->plainTextToken;
+        $success['token'] =  $user->createToken($user->name)->plainTextToken;
         $success['name'] =  $user->name;
-        return response()->json($success,202);
+        return $this->showOne($success,202);
     }
 
 
@@ -55,6 +58,6 @@ class LoginController extends Controller
     {
         $user=Auth::guard('seller')->user();
         $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
-        return response()->json("you are logout",200);
+        return $this->showMessage("you are logout",200);
     }
 }
