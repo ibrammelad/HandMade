@@ -18,7 +18,6 @@ class SellerController extends Controller
         return $this->showAll($sellers , 200);
     }
 
-
     public function show($id)
     {
         $seller = Seller::findOrfail($id);
@@ -28,14 +27,31 @@ class SellerController extends Controller
 
     public function update(Request $request, $id)
     {
-        $rules = [
-            'email' => 'email|unique:sellers',
-            'phone' =>'unique:sellers',
-            'password' => 'confirmed',
-            'available_seller' => 'in:0,1'
-        ];
-    }
 
+        $rules = [
+            'name'  => 'string',
+            'phone' =>'unique:sellers',
+            'available_seller' => 'in:0,1'
+
+        ];
+        if (auth()->user()->id != $id)
+        {
+            return $this->errorResponse('unauthenticated you try to modify another seller you do not have permission ' , 404);
+        }
+        $this->validate($request , $rules);
+        $seller = Seller::findOrFail($id);
+        $seller->fill($request->all());
+        $seller->update();
+
+        return $this->showOne($seller ,202);
+
+
+    }
+    public function me()
+    {
+        $user = auth()->user();
+        return $this->showOne($user , 200);
+    }
     public function destroy($id)
     {
 

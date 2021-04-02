@@ -26,7 +26,7 @@ class LoginController extends Controller
         }
         $success['token'] =  $user->createToken($user->name)->plainTextToken;
         $success['name'] =  $user->name;
-        return $this->showOne($success,202);
+        return $this->successResponse($success,202);
     }
 
     public function Register(Request $request)
@@ -50,7 +50,7 @@ class LoginController extends Controller
         $user = Seller::create($input);
         $success['token'] =  $user->createToken($user->name)->plainTextToken;
         $success['name'] =  $user->name;
-        return $this->showOne($success,202);
+        return $this->successResponse($success,202);
     }
 
 

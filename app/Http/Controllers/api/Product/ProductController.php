@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\api\Category;
+namespace App\Http\Controllers\api\Product;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Traits\apiResponse;
 use Illuminate\Http\Request;
-use App\Models\Category;
 
-class CategoryController extends Controller
+class ProductController extends Controller
 {
-    use apiResponse;
+    use apiResponse ;
+
     public function index()
     {
-        $categories = Category::active()->get();
-        return $this->showAll($categories ,200);
+        $products = Product::all();
+        return $this->showAll($products , 200);
     }
 
     public function store(Request $request)
@@ -21,16 +22,19 @@ class CategoryController extends Controller
         //
     }
 
+
     public function show($id)
     {
-        $category = Category::findOrFail($id);
-        return $this->showOne($category , 200);
+        $product = Product::findOrFail($id);
+        return $this->showOne($product , 200);
     }
+
 
     public function update(Request $request, $id)
     {
         //
     }
+
 
     public function destroy($id)
     {

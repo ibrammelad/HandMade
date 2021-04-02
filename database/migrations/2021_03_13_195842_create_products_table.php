@@ -22,7 +22,6 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('available')->default(1);
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('seller_id');
-            $table->integer('calories')->nullable();
             $table->string('time_to_Preparation');
             $table->timestamps();
         });

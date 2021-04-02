@@ -15,4 +15,10 @@ class Category extends Model
     ];
 
     public $transformer = CategoryTransformation::class;
+
+
+    public function scopeActive($query)
+    {
+        return $query->where('available' , 1);
+    }
 }

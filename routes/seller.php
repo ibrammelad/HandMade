@@ -18,10 +18,12 @@ use Illuminate\Support\Facades\Route;
 Route::post('register' , [\App\Http\Controllers\api\Seller\LoginController::class , 'Register']);
 Route::post('login' , [\App\Http\Controllers\api\Seller\LoginController::class ,'login']);
 
-Route::apiResource('sellers' , \App\Http\Controllers\api\Seller\SellerController::class);
 
 Route::group(['middleware'=>'auth:sanctum'] , function () {
     Route::get('logout', [\App\Http\Controllers\api\Seller\LoginController::class, 'logout']);
+    Route::apiResource('sellers' , \App\Http\Controllers\api\Seller\SellerController::class)->except('store');
+    Route::get('me', [\App\Http\Controllers\api\Seller\SellerController::class, 'me']);
+
 });
 
 
