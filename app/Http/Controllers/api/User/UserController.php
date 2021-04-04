@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Traits\apiResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -15,6 +16,7 @@ class UserController extends Controller
 
     public function index()
     {
+
         $users = User::all();
         return $this->showAll($users, 200);
     }
@@ -36,11 +38,9 @@ class UserController extends Controller
             'email' =>Rule::unique('users', 'email')->ignore($id),
 
         ];
-        $authenticated = PersonalAccessToken::where( 'name' ,'LIKE', auth()->user()->name )->Where('tokenable_id','LIKE',auth()->user()->id )->get();
-        if (auth()->user()->id != $id &&  $authenticated ->first()->name != User::findOrFail($id)->name)
-        {
+        if (isset($this->assurence()->first()->name) != auth()->user()->name)
             return $this->errorResponse('unauthenticated you try to modify another user you do not have permission ' , 404);
-        }
+
         $this->validate($request , $rules);
         $user= User::findOrFail($id);
         $user->fill($request->all());
@@ -58,5 +58,14 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function assurence()
+    {
+        return PersonalAccessToken::where( 'name' ,'LIKE', auth()->user()->name )->
+        Where('tokenable_id','LIKE',auth()->user()->id )->
+        where('tokenable_type' , 'App\Models\Seller')->
+        get();
+
     }
 }

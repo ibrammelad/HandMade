@@ -17,7 +17,6 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-
         $user = Seller::where('email', $request->email)->first();
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([

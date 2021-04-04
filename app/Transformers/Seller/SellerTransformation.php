@@ -39,6 +39,7 @@ class SellerTransformation extends TransformerAbstract
             'number phone'  => $seller->phone ,
             'latitude of address' =>  $seller->latitude,
             'longitude of address' => $seller->longitude,
+            'distance' => round($seller->distance,3),
             'is active seller '  =>$seller->available_seller == 1 ? 'active' : 'inactive',
             'email verified' =>$seller->verified ==0 ? 'verified' :'unverified',
             'creationDate' => $seller->created_at	,

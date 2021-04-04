@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Seller;
 use App\Traits\apiResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class SellerController extends Controller
 {
@@ -14,7 +16,14 @@ class SellerController extends Controller
 
     public function index()
     {
-        $sellers = Seller::all();
+        $lat =auth()->user()->latitude;
+        $lng =auth()->user()->longitude;
+        $model = Seller::Selection();
+        $model->addSelect(DB::raw("acos(cos(" . $lat . "*pi()/180)*cos(latitude*pi()/180)*
+        cos(" . $lng . "*pi()/180-longitude*pi()/180)+
+        sin(" . $lat . "*pi()/180)*sin(latitude * pi()/180))
+        * 6367000 AS distance"))->orderBy('distance','ASC');
+        $sellers  = $model->get();
         return $this->showAll($sellers , 200);
     }
 
@@ -34,10 +43,10 @@ class SellerController extends Controller
             'available_seller' => 'in:0,1'
 
         ];
-        if (auth()->user()->id != $id)
-        {
-            return $this->errorResponse('unauthenticated you try to modify another seller you do not have permission ' , 404);
-        }
+
+        if (isset($this->assurence()->first()->name) != auth()->user()->name)
+            return $this->errorResponse('unauthenticated you try to modify another user you do not have permission ' , 404);
+
         $this->validate($request , $rules);
         $seller = Seller::findOrFail($id);
         $seller->fill($request->all());
@@ -54,6 +63,16 @@ class SellerController extends Controller
     }
     public function destroy($id)
     {
+
+    }
+
+
+    private function assurence()
+    {
+        return PersonalAccessToken::where( 'name' ,'LIKE', auth()->user()->name )->
+        Where('tokenable_id','LIKE',auth()->user()->id )->
+        where('tokenable_type' , 'App\Models\Seller')->
+        get();
 
     }
 }

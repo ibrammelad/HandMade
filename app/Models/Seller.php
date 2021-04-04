@@ -59,15 +59,26 @@ class Seller extends Authenticatable
         return $this->id ;
     }
 
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+
     public function scopeSelection($query)
     {
-        return $query->select( 'name',
+        return $query->select('id','name',
             'email',
             'phone',
             'latitude',
             'longitude',
             'available_seller',
-            'verified');
+            'verified',
+            'created_at',
+            'updated_at'
+        );
     }
+
+
 
 }

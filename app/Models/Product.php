@@ -11,7 +11,7 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name' , 'description'  , 'photo' , 'salary' , 'available' , 'category_id' , 'seller_id' , 'time_to_Preparation'
+        'name' , 'description'  , 'photo' , 'salary' , 'available' , 'category_id' ,'seller_id' , 'time_to_Preparation'
     ];
 
     public $transformer = ProductTransformer::class;
@@ -20,4 +20,15 @@ class Product extends Model
     {
         return $query->where('available' , 1);
     }
+
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class , 'seller_id' , 'id') ;
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class , 'category_id' , 'id') ;
+    }
+
 }

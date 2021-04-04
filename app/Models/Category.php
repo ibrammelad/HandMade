@@ -21,4 +21,9 @@ class Category extends Model
     {
         return $query->where('available' , 1);
     }
-}
+
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }}
