@@ -34,11 +34,13 @@ class UserController extends Controller
 
         $rules = [
             'name'  => 'string',
-            'phone' =>Rule::unique('users', 'phone')->ignore($id),
-            'email' =>Rule::unique('users', 'email')->ignore($id),
+            'phone' =>'Digits:11|'.Rule::unique('users', 'phone')->ignore($id),
+            'email' =>'email|'.Rule::unique('users', 'email')->ignore($id),
 
         ];
-        if (isset($this->assurence()->first()->name) != auth()->user()->name)
+
+
+        if ($this->assurence()->first()->tokenable_id != $id)
             return $this->errorResponse('unauthenticated you try to modify another user you do not have permission ' , 404);
 
         $this->validate($request , $rules);
@@ -64,7 +66,7 @@ class UserController extends Controller
     {
         return PersonalAccessToken::where( 'name' ,'LIKE', auth()->user()->name )->
         Where('tokenable_id','LIKE',auth()->user()->id )->
-        where('tokenable_type' , 'App\Models\Seller')->
+        where('tokenable_type' , 'App\Models\User')->
         get();
 
     }

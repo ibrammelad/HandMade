@@ -16,7 +16,7 @@ class ProductController extends Controller
     public function index()
     {
 
-        if (isset($this->assurence()->first()->name) != auth()->user()->name)
+        if ($this->assurence()->first()->name  != auth()->user()->name)
             return $this->errorResponse('unauthenticated you try to modify another user you do not have permission ' , 404);
 
         $products = Product::where('seller_id' , auth()->user()->id)->get();

@@ -44,7 +44,7 @@ class SellerController extends Controller
 
         ];
 
-        if (isset($this->assurence()->first()->name) != auth()->user()->name)
+        if (isset($this->assurence()->first()->tokenable_id) !== $id)
             return $this->errorResponse('unauthenticated you try to modify another user you do not have permission ' , 404);
 
         $this->validate($request , $rules);

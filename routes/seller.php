@@ -19,11 +19,14 @@ Route::post('register' , [\App\Http\Controllers\api\Seller\LoginController::clas
 Route::post('login' , [\App\Http\Controllers\api\Seller\LoginController::class ,'login']);
 
 
+
+
 Route::group(['middleware'=>'auth:sanctum'] , function () {
     Route::get('logout', [\App\Http\Controllers\api\Seller\LoginController::class, 'logout']);
     Route::apiResource('sellers' , \App\Http\Controllers\api\Seller\SellerController::class)->except('store');
     Route::apiResource('products' , \App\Http\Controllers\api\Product\ProductController::class)->except('index' , 'show');
     Route::get('me', [\App\Http\Controllers\api\Seller\SellerController::class, 'me']);
+
 
 });
 
