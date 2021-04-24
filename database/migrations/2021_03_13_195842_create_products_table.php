@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->text('description');
             $table->string('photo')->nullable();
             $table->string('salary');
+            $table->string('calories');
             $table->tinyInteger('available')->default(1);
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('seller_id');
