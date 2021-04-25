@@ -16,14 +16,15 @@ class SellerController extends Controller
 
     public function index()
     {
-        $lat =auth()->user()->latitude;
-        $lng =auth()->user()->longitude;
-        $model = Seller::Selection();
-        $model->addSelect(DB::raw("acos(cos(" . $lat . "*pi()/180)*cos(latitude*pi()/180)*
-        cos(" . $lng . "*pi()/180-longitude*pi()/180)+
-        sin(" . $lat . "*pi()/180)*sin(latitude * pi()/180))
-        * 6367000 AS distance"))->orderBy('distance','ASC');
-        $sellers  = $model->get();
+//        $lat =auth()->user()->latitude;
+//        $lng =auth()->user()->longitude;
+//        $model = Seller::Selection();
+//        $model->addSelect(DB::raw("acos(cos(" . $lat . "*pi()/180)*cos(latitude*pi()/180)*
+//        cos(" . $lng . "*pi()/180-longitude*pi()/180)+
+//        sin(" . $lat . "*pi()/180)*sin(latitude * pi()/180))
+//        * 6367000 AS distance"))->orderBy('distance','ASC');
+//        $sellers  = $model->get();
+        $sellers =Seller::all();
         return $this->showAll($sellers , 200);
     }
 
