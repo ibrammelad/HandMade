@@ -44,10 +44,16 @@ class UserController extends Controller
             return $this->errorResponse('unauthenticated you try to modify another user you do not have permission ' , 404);
 
         $this->validate($request , $rules);
+        $data = $request->except('photo');
+        if ($request->hasFile('photo'))
+        {
+            $image  = $request->file('photo');
+            $new_name = $data['name'].'.'.$image->getClientOriginalExtension();
+            $image->move(public_path("images/users") ,$new_name );
+            $data['photo'] = $new_name;
+        }
         $user= User::findOrFail($id);
-        $user->fill($request->all());
-        $user->update();
-
+        $user->update($data);
         return $this->showOne($user ,202);
     }
 

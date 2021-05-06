@@ -15,7 +15,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('phone', $request->phone)->first();
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
@@ -41,9 +41,16 @@ class LoginController extends Controller
             return response()->json( $validator->errors() , 404);
         }
 
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
+        $data = $request->except('photo');
+        if ($request->hasFile('photo'))
+        {
+            $image  = $request->file('photo');
+            $new_name = $data['name'].'.'.$image->getClientOriginalExtension();
+            $image->move(public_path("images/users") ,$new_name );
+            $data['photo'] = $new_name;
+        }
+        $data['password'] = bcrypt($data['password']);
+        $user = User::create($data);
         $success['token'] =  $user->createToken($user->name)->plainTextToken;
         $success['name'] =  $user->name;
         return response()->json($success,202);

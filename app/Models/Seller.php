@@ -30,6 +30,7 @@ class Seller extends Authenticatable
         'latitude',
         'longitude',
         'available_seller',
+        'photo',
         'verified',
         'password',
     ];
@@ -79,6 +80,10 @@ class Seller extends Authenticatable
         );
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(category::class);
+    }
 
 
 }

@@ -28,7 +28,7 @@ trait apiResponse
 //        $collection = $this->filterData($collection, $transformer);
 //        $collection = $this->sortData($collection, $transformer);
         $collection = $this->paginate($collection, $perPage);
-        $collection = $this->transformData($collection, $transformer);
+//       $collection = $this->transformData($collection, $transformer);
 //        $collection = $this->cache($collection);
 
         return response()->json($collection, $code);
@@ -39,7 +39,7 @@ trait apiResponse
     {
         $transformer = $instance->transformer;
 
-        $instance = $this->transformData($instance, $transformer);
+       // $instance = $this->transformData($instance, $transformer);
 
         return $this->successResponse($instance, $code);
     }
@@ -59,11 +59,11 @@ trait apiResponse
 
 
     /// ///// transformation for data for view
-    protected function transformData($data, $transformer)
-    {
-        $transformation = fractal($data, new $transformer);
-        return $transformation->toArray();
-    }
+//    protected function transformData($data, $transformer)
+//    {
+//        $transformation = fractal($data, new $transformer);
+//        return $transformation->toArray();
+//    }
 
 
     protected function paginate(Collection $collection, $perPage)

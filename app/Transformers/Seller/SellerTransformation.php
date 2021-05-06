@@ -35,6 +35,7 @@ class SellerTransformation extends TransformerAbstract
         return [
             'identifier' => $seller->id ,
             'name' => $seller->name,
+            'photo' => $seller->photo,
             'latitude of address' =>  $seller->latitude,
             'longitude of address' => $seller->longitude,
             'distance' => round($seller->distance,3),

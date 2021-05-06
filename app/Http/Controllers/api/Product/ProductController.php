@@ -13,6 +13,17 @@ class ProductController extends Controller
 {
     use apiResponse ;
 
+
+    ////// all products can users see ////
+    public function productsUsers()
+    {
+        $products =Product::all();
+
+        return $this->showAll($products);
+    }
+
+
+    /////////  my products //////
     public function index()
     {
 
@@ -30,16 +41,17 @@ class ProductController extends Controller
             return $this->errorResponse('unauthenticated you try to modify another user you do not have permission ' , 404);
 
         $this->validate($request, $this->validStore());
-        $product = Product::create([
-            "name" => $request->name,
-            "description" => $request->description,
-            "salary" => $request->salary,
-            "available" => $request->available,
-            "category_id" => $request->category_id,
-            "seller_id" => auth()->user()->id,
-            "time_to_Preparation" => $request->time_to_Preparation
-        ]);
+        $data = $request->except('photo');
 
+        if ($request->hasFile('photo'))
+        {
+            $image  = $request->file('photo');
+            $new_name = $data['name'].'.'.$image->getClientOriginalExtension();
+            $image->move(public_path("images/product") ,$new_name );
+            $data['photo'] = $new_name;
+        }
+        $data['seller_id'] =auth()->user()->id;
+        $product = Product::create($data);
         return $this->showOne($product , 202) ;
     }
 
@@ -53,7 +65,7 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         if (isset($this->assurence()->first()->name) != auth()->user()->name)
-            return $this->errorResponse('unauthenticated you try to modify another user you do not have permission ' , 404);
+            return $this->errorResponse('unauthenticated ' , 404);
 
         $product = Product::findOrFail($id) ;
         if ($product->seller_id != auth()->user()->id)
@@ -66,12 +78,6 @@ class ProductController extends Controller
 
     }
 
-
-    public function destroy($id)
-    {
-        //
-    }
-
     private function validStore()
     {
         return   [
@@ -81,6 +87,7 @@ class ProductController extends Controller
             'available' => 'required|in:0,1',
             'category_id' => 'required' ,
             'time_to_Preparation' =>'required' ,
+            ''
         ];
     }
     private function validUpdate()
@@ -91,8 +98,6 @@ class ProductController extends Controller
             'available' => 'in:0,1',
         ];
     }
-
-
     private function assurence()
     {
         return PersonalAccessToken::where( 'name' ,'LIKE', auth()->user()->name )->

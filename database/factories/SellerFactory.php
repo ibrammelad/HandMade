@@ -25,6 +25,7 @@ class SellerFactory extends Factory
         $long = -84.3880;
         return [
             'name' => $this->faker->name,
+            'photo' => '1.png',
             'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->numberBetween(200000 , 155555555),
             'latitude'=> $this->faker->latitude($min = ($lang-mt_rand(0,20)), $max = ($lang+mt_rand(0,20))),

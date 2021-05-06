@@ -44,9 +44,16 @@ class LoginController extends Controller
             return $this->showMessage( $validator->errors() , 404);
         }
 
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = Seller::create($input);
+        $data = $request->except('photo');
+        if ($request->hasFile('photo'))
+        {
+            $image  = $request->file('photo');
+            $new_name = $data['name'].'.'.$image->getClientOriginalExtension();
+            $image->move(public_path("images/users") ,$new_name );
+            $data['photo'] = $new_name;
+        }
+        $data['password'] = bcrypt($data['password']);
+        $user = Seller::create($data);
         $success['token'] =  $user->createToken($user->name)->plainTextToken;
         $success['name'] =  $user->name;
         return $this->successResponse($success,202);

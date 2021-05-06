@@ -11,7 +11,7 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name' , 'description'  , 'photo' , 'salary' , 'available' , 'category_id' ,'seller_id' , 'time_to_Preparation'
+        'name' , 'description'  ,'calories', 'photo' , 'salary' , 'available' , 'category_id' ,'seller_id' , 'time_to_Preparation'
     ];
 
     public $transformer = ProductTransformer::class;
