@@ -23,7 +23,7 @@ class CreateSellersTable extends Migration
             $table->double('longitude');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->tinyInteger('available_seller')->default(1);
+            $table->tinyInteger('online')->default(1);
             $table->tinyInteger('verified')->default(0);
             $table->rememberToken();
             $table->timestamps();

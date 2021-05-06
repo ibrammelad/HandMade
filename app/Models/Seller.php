@@ -29,7 +29,7 @@ class Seller extends Authenticatable
         'phone',
         'latitude',
         'longitude',
-        'available_seller',
+        'online',
         'photo',
         'verified',
         'password',
@@ -66,6 +66,11 @@ class Seller extends Authenticatable
     }
 
 
+//    public function onlineSellers($query)
+//    {
+//        return $query->where('online' , '1');
+//    }
+
     public function scopeSelection($query)
     {
         return $query->select('id','name',
@@ -73,12 +78,13 @@ class Seller extends Authenticatable
             'phone',
             'latitude',
             'longitude',
-            'available_seller',
+            'online',
             'verified',
             'created_at',
             'updated_at'
         );
     }
+
 
     public function categories()
     {

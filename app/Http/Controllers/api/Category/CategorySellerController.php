@@ -13,7 +13,17 @@ class CategorySellerController extends Controller
     public function categorySellers(Category $category)
     {
        $sellers = $category->sellers;
-       //return $sellers;
-       return $this->showAll($sellers);
+       $online=[];
+        foreach ($sellers as $index =>$seller) {
+            if ($seller->online == '1' )
+            {
+                $online[$index] = $seller;
+            }
+            else
+                continue;
+       }
+
+        $onlineSellers  =collect($online);
+       return $this->showAll($onlineSellers);
     }
 }

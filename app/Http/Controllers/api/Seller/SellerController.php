@@ -40,7 +40,7 @@ class SellerController extends Controller
         $rules = [
             'name'  => 'string',
             'phone' =>'unique:sellers',
-            'available_seller' => 'in:0,1'
+            'online' => 'in:0,1'
         ];
 
         if ($this->assurence()->first()->tokenable_id != $id)
@@ -66,6 +66,22 @@ class SellerController extends Controller
         Where('tokenable_id','LIKE',auth()->user()->id )->
         where('tokenable_type' , 'App\Models\Seller')->
         get();
+
+    }
+
+    public function changeStatus(Request  $request)
+    {
+        $rules = [
+            'online' => 'required|in:0,1'
+        ];
+        $this->validate($request ,$rules);
+       // $seller = Seller::findOrFail($id);
+
+        $seller = auth()->user();
+        $seller->update([
+            'online' => $request->online
+        ]);
+        return $this->showOne($seller);
 
     }
 }

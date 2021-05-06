@@ -17,7 +17,7 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $user = Seller::where('email', $request->email)->first();
+        $user = Seller::where('phone', $request->email)->first();
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
@@ -37,7 +37,7 @@ class LoginController extends Controller
             'password' => 'required|confirmed',
             'latitude' => 'required',
             'longitude' => 'required',
-            'available_seller' => 'required|in:0,1'
+            'online' => 'required|in:0,1'
         ]);
 
         if($validator->fails()){

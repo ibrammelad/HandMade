@@ -31,7 +31,7 @@ class SellerFactory extends Factory
             'latitude'=> $this->faker->latitude($min = ($lang-mt_rand(0,20)), $max = ($lang+mt_rand(0,20))),
             'longitude' =>$this->faker->longitude($min = ($long-mt_rand(0,20)), $max = ($long+mt_rand(0,20))),
             'password' => bcrypt('secret'), // secret
-            'available_seller'=>$this->faker->randomElement([0,1]),
+            'online'=>$this->faker->randomElement([0,1]),
 
             ];
     }

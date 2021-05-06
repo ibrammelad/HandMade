@@ -14,6 +14,7 @@ Route::get('categories/{category}/products' , [App\Http\Controllers\api\Product\
 Route::get('timeline' , [App\Http\Controllers\api\Product\ProductSellerController::class , 'timeline']);
 Route::get('/productsForUsers' , [App\Http\Controllers\api\Product\ProductController::class,'productsUsers']);
 Route::get('/categories/{category}/sellers' , [App\Http\Controllers\api\Category\CategorySellerController::class,'categorySellers']);
+Route::apiResource('products' , \App\Http\Controllers\api\Product\ProductController::class)->only('show');
 
 Route::group(['middleware'=>'auth:sanctum'] , function () {
     Route::get('logout', [\App\Http\Controllers\api\User\LoginController::class, 'logout']);
